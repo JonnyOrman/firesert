@@ -23,15 +23,7 @@ type PubSubBody struct {
 var firesertConfig FiresertConfig
 
 func Run() {
-	firesertConfigJson, _ := ioutil.ReadFile("./firesert-config.json")
-
-	_ = json.Unmarshal(firesertConfigJson, &firesertConfig)
-
-	router := gin.Default()
-
-	router.POST("/", handle)
-
-	router.Run()
+	RunTyped[map[string]interface{}]()
 }
 
 func RunTyped[T any]() {
@@ -41,31 +33,12 @@ func RunTyped[T any]() {
 
 	router := gin.Default()
 
-	router.POST("/", handleGeneric[T])
+	router.POST("/", handle[T])
 
 	router.Run()
 }
 
-func handle(ginContext *gin.Context) {
-
-	client, _ := firestore.NewClient(context.Background(), firesertConfig.ProjectID)
-
-	defer client.Close()
-
-	bodyAsByteArray, _ := ioutil.ReadAll(ginContext.Request.Body)
-
-	var pubsubBody PubSubBody
-	_ = json.Unmarshal(bodyAsByteArray, &pubsubBody)
-
-	var unmarshaledData map[string]interface{}
-	json.Unmarshal([]byte(string(pubsubBody.Message.Data)), &unmarshaledData)
-
-	collection := client.Collection(firesertConfig.CollectionName)
-
-	_, _, _ = collection.Add(context.Background(), unmarshaledData)
-}
-
-func handleGeneric[T any](ginContext *gin.Context) {
+func handle[T any](ginContext *gin.Context) {
 	client, _ := firestore.NewClient(context.Background(), firesertConfig.ProjectID)
 
 	defer client.Close()
