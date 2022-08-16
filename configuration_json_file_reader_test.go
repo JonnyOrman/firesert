@@ -21,8 +21,8 @@ type IoReaderGeneratorMock struct {
 	mock.Mock
 }
 
-func (ioReaderGenerator IoReaderGeneratorMock) Generate(payload string) io.Reader {
-	args := ioReaderGenerator.Called(payload)
+func (this IoReaderGeneratorMock) Generate(payload string) io.Reader {
+	args := this.Called(payload)
 	return args.Get(0).(io.Reader)
 }
 
@@ -30,8 +30,8 @@ type ReaderMock struct {
 	mock.Mock
 }
 
-func (reader ReaderMock) Read(ioReader io.Reader) []byte {
-	args := reader.Called(ioReader)
+func (this ReaderMock) Read(ioReader io.Reader) []byte {
+	args := this.Called(ioReader)
 	return args.Get(0).([]byte)
 }
 
@@ -48,11 +48,11 @@ func TestConfigurationJsonFileReaderRead(t *testing.T) {
 	reader := new(ReaderMock)
 	reader.On("Read", ioReader).Return(expectedJson)
 
-	configurationJsonFileReader := ConfigurationJsonFileReader{
+	sut := ConfigurationJsonFileReader{
 		ioReaderGenerator,
 		reader}
 
-	result := configurationJsonFileReader.Read()
+	result := sut.Read()
 
 	assert.Equal(t, expectedJson, result)
 }

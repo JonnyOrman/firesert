@@ -12,17 +12,16 @@ type RequestHandlerMock[T any] struct {
 	mock.Mock
 }
 
-func (requestHandler RequestHandlerMock[T]) Handle(ginContext *gin.Context) {
-}
+func (this RequestHandlerMock[T]) Handle(ginContext *gin.Context) {}
 
 func TestBuild(t *testing.T) {
 	requestHandler := new(RequestHandlerMock[interface{}])
 
-	ginRouterBuilder := GinRouterBuilder[interface{}]{requestHandler}
+	sut := GinRouterBuilder[interface{}]{requestHandler}
 
-	router := ginRouterBuilder.Build()
+	result := sut.Build()
 
-	routes := router.Routes()
+	routes := result.Routes()
 
 	assert.Equal(t, len(routes), 1)
 

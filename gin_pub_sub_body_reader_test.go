@@ -45,12 +45,12 @@ func TestGinPubSubBodyReaderRead(t *testing.T) {
 	pubSubBodyDeserialiser := new(DataDeserialiserMock[PubSubBody])
 	pubSubBodyDeserialiser.On("Deserialise", data).Return(expectedPubSubBody)
 
-	ginPubSubBodyReader := GinPubSubBodyReader{
+	sut := GinPubSubBodyReader{
 		reader,
 		pubSubBodyDeserialiser,
 	}
 
-	pubSubBody := ginPubSubBodyReader.Read(&ginContext)
+	result := sut.Read(&ginContext)
 
-	assert.Equal(t, expectedPubSubBody, pubSubBody)
+	assert.Equal(t, expectedPubSubBody, result)
 }

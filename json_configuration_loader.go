@@ -8,14 +8,16 @@ type JsonConfigurationLoader struct {
 func NewJsonConfigurationLoader(
 	fileReader FileReader,
 	configuratoinCreator ConfigurationCreator) *JsonConfigurationLoader {
-	jsonConfigurationLoader := new(JsonConfigurationLoader)
-	jsonConfigurationLoader.fileReader = fileReader
-	jsonConfigurationLoader.configurationCreator = configuratoinCreator
-	return jsonConfigurationLoader
+	this := new(JsonConfigurationLoader)
+
+	this.fileReader = fileReader
+	this.configurationCreator = configuratoinCreator
+
+	return this
 }
 
-func (configurationLoader JsonConfigurationLoader) Load() Configuration {
-	json := configurationLoader.fileReader.Read()
+func (this JsonConfigurationLoader) Load() Configuration {
+	json := this.fileReader.Read()
 
-	return configurationLoader.configurationCreator.Create(json)
+	return this.configurationCreator.Create(json)
 }

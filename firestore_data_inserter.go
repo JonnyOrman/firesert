@@ -11,17 +11,19 @@ type FirestoreDataInserter[T any] struct {
 }
 
 func NewFirestoreDataInserter[T any](configuration Configuration) *FirestoreDataInserter[T] {
-	firestoreDataInserter := new(FirestoreDataInserter[T])
-	firestoreDataInserter.configuration = configuration
-	return firestoreDataInserter
+	this := new(FirestoreDataInserter[T])
+
+	this.configuration = configuration
+
+	return this
 }
 
-func (dataInserter FirestoreDataInserter[T]) Insert(data T) {
-	client, _ := firestore.NewClient(context.Background(), dataInserter.configuration.ProjectID)
+func (this FirestoreDataInserter[T]) Insert(data T) {
+	client, _ := firestore.NewClient(context.Background(), this.configuration.ProjectID)
 
 	defer client.Close()
 
-	collection := client.Collection(dataInserter.configuration.CollectionName)
+	collection := client.Collection(this.configuration.CollectionName)
 
 	_, _, _ = collection.Add(context.Background(), data)
 }

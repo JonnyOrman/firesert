@@ -12,17 +12,18 @@ type GinPubSubBodyReader struct {
 func NewGinPubSubBodyReader(
 	reader Reader,
 	pubSubBodyDeserialiser DataDeserialiser[PubSubBody]) *GinPubSubBodyReader {
-	ginPubSubBodyReader := new(GinPubSubBodyReader)
-	ginPubSubBodyReader.reader = reader
-	ginPubSubBodyReader.pubSubBodyDeserialiser = pubSubBodyDeserialiser
+	this := new(GinPubSubBodyReader)
 
-	return ginPubSubBodyReader
+	this.reader = reader
+	this.pubSubBodyDeserialiser = pubSubBodyDeserialiser
+
+	return this
 }
 
-func (ginPubSubBodyReader GinPubSubBodyReader) Read(ginContext *gin.Context) PubSubBody {
-	bodyByteArray := ginPubSubBodyReader.reader.Read(ginContext.Request.Body)
+func (this GinPubSubBodyReader) Read(ginContext *gin.Context) PubSubBody {
+	bodyByteArray := this.reader.Read(ginContext.Request.Body)
 
-	pubSubBody := ginPubSubBodyReader.pubSubBodyDeserialiser.Deserialise(bodyByteArray)
+	pubSubBody := this.pubSubBodyDeserialiser.Deserialise(bodyByteArray)
 
 	return pubSubBody
 }

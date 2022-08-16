@@ -9,8 +9,8 @@ type PubSubPushRequestHandler[T any] struct {
 	dataInserter DataInserter[T]
 }
 
-func (requestHandler PubSubPushRequestHandler[T]) Handle(ginContext *gin.Context) {
-	data := requestHandler.dataReader.Read(ginContext)
+func (this PubSubPushRequestHandler[T]) Handle(ginContext *gin.Context) {
+	data := this.dataReader.Read(ginContext)
 
-	requestHandler.dataInserter.Insert(data)
+	this.dataInserter.Insert(data)
 }

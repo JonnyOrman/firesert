@@ -4,7 +4,7 @@ import "encoding/json"
 
 type JsonConfigurationCreator struct{}
 
-func (jsonConfigurationCreator JsonConfigurationCreator) Create(configurationJson []byte) Configuration {
+func (this JsonConfigurationCreator) Create(configurationJson []byte) Configuration {
 	var configuration Configuration
 	_ = json.Unmarshal(configurationJson, &configuration)
 

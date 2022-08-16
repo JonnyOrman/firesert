@@ -8,18 +8,19 @@ type ConfigurationJsonFileReader struct {
 func NewConfigurationJsonFileReader(
 	ioReaderGenerator IoReaderGenerator,
 	reader Reader) *ConfigurationJsonFileReader {
-	configurationJsonFileReader := new(ConfigurationJsonFileReader)
-	configurationJsonFileReader.ioReaderGenerator = ioReaderGenerator
-	configurationJsonFileReader.reader = reader
+	this := new(ConfigurationJsonFileReader)
 
-	return configurationJsonFileReader
+	this.ioReaderGenerator = ioReaderGenerator
+	this.reader = reader
+
+	return this
 }
 
-func (fileReader ConfigurationJsonFileReader) Read() []byte {
+func (this ConfigurationJsonFileReader) Read() []byte {
 	var payload string
-	ioReader := fileReader.ioReaderGenerator.Generate(payload)
+	ioReader := this.ioReaderGenerator.Generate(payload)
 
-	configurationJson := fileReader.reader.Read(ioReader)
+	configurationJson := this.reader.Read(ioReader)
 
 	return configurationJson
 }

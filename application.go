@@ -7,11 +7,13 @@ type Application struct {
 }
 
 func NewApplication(router *gin.Engine) *Application {
-	application := new(Application)
-	application.router = router
-	return application
+	this := new(Application)
+
+	this.router = router
+
+	return this
 }
 
-func (application Application) Run() {
-	application.router.Run()
+func (this Application) Run() {
+	this.router.Run()
 }

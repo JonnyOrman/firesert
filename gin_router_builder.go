@@ -7,15 +7,17 @@ type GinRouterBuilder[T any] struct {
 }
 
 func NewGinRouterBuilder[T any](requestHandler RequestHandler[T]) *GinRouterBuilder[T] {
-	ginRouterBuilder := new(GinRouterBuilder[T])
-	ginRouterBuilder.requestHandler = requestHandler
-	return ginRouterBuilder
+	this := new(GinRouterBuilder[T])
+
+	this.requestHandler = requestHandler
+
+	return this
 }
 
-func (routerBuilder GinRouterBuilder[T]) Build() *gin.Engine {
+func (this GinRouterBuilder[T]) Build() *gin.Engine {
 	router := gin.Default()
 
-	router.POST("/", routerBuilder.requestHandler.Handle)
+	router.POST("/", this.requestHandler.Handle)
 
 	return router
 }

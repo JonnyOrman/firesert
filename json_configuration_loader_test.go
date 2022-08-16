@@ -11,8 +11,8 @@ type FileReaderMock struct {
 	mock.Mock
 }
 
-func (fileReader FileReaderMock) Read() []byte {
-	args := fileReader.Called()
+func (this FileReaderMock) Read() []byte {
+	args := this.Called()
 	return args.Get(0).([]byte)
 }
 
@@ -20,8 +20,8 @@ type ConfigurationCreatorMock struct {
 	mock.Mock
 }
 
-func (configurationCreator ConfigurationCreatorMock) Create(configurationJson []byte) Configuration {
-	args := configurationCreator.Called(configurationJson)
+func (this ConfigurationCreatorMock) Create(configurationJson []byte) Configuration {
+	args := this.Called(configurationJson)
 	return args.Get(0).(Configuration)
 }
 
@@ -35,9 +35,9 @@ func TestLoad(t *testing.T) {
 	configurationCreator := new(ConfigurationCreatorMock)
 	configurationCreator.On("Create", configurationJson).Return(expectedConfiguration)
 
-	jsonConfigurationLoader := JsonConfigurationLoader{fileReader, configurationCreator}
+	sut := JsonConfigurationLoader{fileReader, configurationCreator}
 
-	configuration := jsonConfigurationLoader.Load()
+	result := sut.Load()
 
-	assert.Equal(t, expectedConfiguration, configuration)
+	assert.Equal(t, expectedConfiguration, result)
 }

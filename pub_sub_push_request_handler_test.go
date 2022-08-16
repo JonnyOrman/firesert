@@ -11,8 +11,8 @@ type DataReaderMock[T any] struct {
 	mock.Mock
 }
 
-func (dataReader DataReaderMock[T]) Read(ginContext *gin.Context) T {
-	args := dataReader.Called(ginContext)
+func (this DataReaderMock[T]) Read(ginContext *gin.Context) T {
+	args := this.Called(ginContext)
 	return args.Get(0).(T)
 }
 
@@ -20,8 +20,8 @@ type DataInserterMock[T any] struct {
 	mock.Mock
 }
 
-func (dataInserter DataInserterMock[T]) Insert(data T) {
-	_ = dataInserter.Called(data)
+func (this DataInserterMock[T]) Insert(data T) {
+	_ = this.Called(data)
 }
 
 func TestHandle(t *testing.T) {
@@ -36,7 +36,7 @@ func TestHandle(t *testing.T) {
 	dataInserter := new(DataInserterMock[interface{}])
 	dataInserter.On("Insert", data).Return()
 
-	requestHandler := PubSubPushRequestHandler[interface{}]{dataReader, dataInserter}
+	sut := PubSubPushRequestHandler[interface{}]{dataReader, dataInserter}
 
-	requestHandler.Handle(&ginContext)
+	sut.Handle(&ginContext)
 }

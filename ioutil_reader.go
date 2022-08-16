@@ -7,7 +7,7 @@ import (
 
 type IoutilReader struct{}
 
-func (ioutilReader IoutilReader) Read(ioReader io.Reader) []byte {
+func (this IoutilReader) Read(ioReader io.Reader) []byte {
 	data, _ := ioutil.ReadAll(ioReader)
 
 	return data

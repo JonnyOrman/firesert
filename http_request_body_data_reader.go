@@ -12,14 +12,16 @@ type HttpRequestBodyDataReader[T any] struct {
 func NewHttpRequestBodyDataReader[T any](
 	pubSubBodyReader PubSubBodyReader,
 	dataDeserialiser DataDeserialiser[T]) *HttpRequestBodyDataReader[T] {
-	httpRequestBodyDataReader := new(HttpRequestBodyDataReader[T])
-	httpRequestBodyDataReader.pubSubBodyReader = pubSubBodyReader
-	httpRequestBodyDataReader.dataDeserialiser = dataDeserialiser
-	return httpRequestBodyDataReader
+	this := new(HttpRequestBodyDataReader[T])
+
+	this.pubSubBodyReader = pubSubBodyReader
+	this.dataDeserialiser = dataDeserialiser
+
+	return this
 }
 
-func (dataReader HttpRequestBodyDataReader[T]) Read(ginContext *gin.Context) T {
-	pubSubBody := dataReader.pubSubBodyReader.Read(ginContext)
+func (this HttpRequestBodyDataReader[T]) Read(ginContext *gin.Context) T {
+	pubSubBody := this.pubSubBodyReader.Read(ginContext)
 
-	return dataReader.dataDeserialiser.Deserialise(pubSubBody.Message.Data)
+	return this.dataDeserialiser.Deserialise(pubSubBody.Message.Data)
 }

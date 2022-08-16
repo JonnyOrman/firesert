@@ -7,6 +7,6 @@ import (
 
 type ConfigurationIoReaderGenerator struct{}
 
-func (configurationIoReaderGenerator ConfigurationIoReaderGenerator) Generate(payload string) io.Reader {
+func (this ConfigurationIoReaderGenerator) Generate(payload string) io.Reader {
 	return bytes.NewBufferString(payload)
 }

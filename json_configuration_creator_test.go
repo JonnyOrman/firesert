@@ -9,10 +9,10 @@ import (
 func TestCreate(t *testing.T) {
 	json := []byte("{\"ProjectID\":\"my-project\",\"collectionName\":\"MyCollection\"}")
 
-	jsonConfigurationCreator := JsonConfigurationCreator{}
+	sut := JsonConfigurationCreator{}
 
-	configuration := jsonConfigurationCreator.Create(json)
+	result := sut.Create(json)
 
-	assert.Equal(t, "my-project", configuration.ProjectID)
-	assert.Equal(t, "MyCollection", configuration.CollectionName)
+	assert.Equal(t, "my-project", result.ProjectID)
+	assert.Equal(t, "MyCollection", result.CollectionName)
 }

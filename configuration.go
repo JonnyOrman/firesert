@@ -6,8 +6,10 @@ type Configuration struct {
 }
 
 func NewConfiguration(projectID string, collectionName string) *Configuration {
-	configuration := new(Configuration)
-	configuration.ProjectID = projectID
-	configuration.CollectionName = collectionName
-	return configuration
+	this := new(Configuration)
+
+	this.ProjectID = projectID
+	this.CollectionName = collectionName
+
+	return this
 }

@@ -18,8 +18,8 @@ type PubSubBodyReaderMock struct {
 	mock.Mock
 }
 
-func (pubSubBodyReader PubSubBodyReaderMock) Read(ginContext *gin.Context) PubSubBody {
-	args := pubSubBodyReader.Called(ginContext)
+func (this PubSubBodyReaderMock) Read(ginContext *gin.Context) PubSubBody {
+	args := this.Called(ginContext)
 	return args.Get(0).(PubSubBody)
 }
 
@@ -27,8 +27,8 @@ type DataDeserialiserMock[T any] struct {
 	mock.Mock
 }
 
-func (dataDeserialiser DataDeserialiserMock[T]) Deserialise(data []byte) T {
-	args := dataDeserialiser.Called(data)
+func (this DataDeserialiserMock[T]) Deserialise(data []byte) T {
+	args := this.Called(data)
 	return args.Get(0).(T)
 }
 
@@ -56,9 +56,9 @@ func TestHttpRequestBodyDataReaderRead(t *testing.T) {
 	dataDeserialiser := new(DataDeserialiserMock[DataModel])
 	dataDeserialiser.On("Deserialise", pubSubBody.Message.Data).Return(expectedData)
 
-	httpRequestBodyDataReader := HttpRequestBodyDataReader[DataModel]{pubSubBodyReader, dataDeserialiser}
+	sut := HttpRequestBodyDataReader[DataModel]{pubSubBodyReader, dataDeserialiser}
 
-	data := httpRequestBodyDataReader.Read(&ginContext)
+	result := sut.Read(&ginContext)
 
-	assert.Equal(t, expectedData, data)
+	assert.Equal(t, expectedData, result)
 }
