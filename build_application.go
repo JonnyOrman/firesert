@@ -1,13 +1,11 @@
 package firesert
 
 func BuildApplication[T any]() Application {
-	configurationIoReaderGenerator := ConfigurationIoReaderGenerator{}
-
-	reader := IoutilReader{}
+	configurationFilePathProvider := ConfigurationFilePathProvider{"firesert-config"}
 
 	configurationFileReader := ConfigurationJsonFileReader{
-		configurationIoReaderGenerator,
-		reader}
+		configurationFilePathProvider,
+	}
 
 	configuratonCreator := JsonConfigurationCreator{}
 
@@ -19,8 +17,10 @@ func BuildApplication[T any]() Application {
 
 	pubSubBodyDeserialiser := JsonDataDeserialiser[PubSubBody]{}
 
+	ioutilReader := IoutilReader{}
+
 	pubSubBodyReader := GinPubSubBodyReader{
-		reader,
+		ioutilReader,
 		pubSubBodyDeserialiser}
 
 	dataDeserialiser := JsonDataDeserialiser[T]{}

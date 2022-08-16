@@ -1,6 +1,7 @@
 package firesert
 
 import (
+	"io"
 	"net/http"
 	"testing"
 
@@ -21,6 +22,15 @@ func (readCloser ReadCloserMock) Read(p []byte) (n int, err error) {
 func (readCloser ReadCloserMock) Close() error {
 	args := readCloser.Called()
 	return args.Get(0).(error)
+}
+
+type ReaderMock struct {
+	mock.Mock
+}
+
+func (this ReaderMock) Read(ioReader io.Reader) []byte {
+	args := this.Called(ioReader)
+	return args.Get(0).([]byte)
 }
 
 func TestGinPubSubBodyReaderRead(t *testing.T) {
