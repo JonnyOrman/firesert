@@ -1,25 +1,26 @@
 package firesert
 
 import (
-	"io/ioutil"
+	"encoding/json"
 )
 
 type ConfigurationJsonFileReader struct {
-	filePathProvider FilePathProvider
+	configurationFileReader FileReader
 }
 
-func NewConfigurationJsonFileReader(filePathProvider FilePathProvider) *ConfigurationJsonFileReader {
+func NewConfigurationJsonFileReader(configurationFileReader FileReader) *ConfigurationJsonFileReader {
 	this := new(ConfigurationJsonFileReader)
 
-	this.filePathProvider = filePathProvider
+	this.configurationFileReader = configurationFileReader
 
 	return this
 }
 
-func (this ConfigurationJsonFileReader) Read() []byte {
-	filePath := this.filePathProvider.Get()
+func (this ConfigurationJsonFileReader) Read() map[string]interface{} {
+	configurationFileData := this.configurationFileReader.Read()
 
-	configurationJson, _ := ioutil.ReadFile(filePath)
+	var configurationJson map[string]interface{}
+	json.Unmarshal(configurationFileData, &configurationJson)
 
 	return configurationJson
 }
