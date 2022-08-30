@@ -3,15 +3,20 @@ package firesert
 func BuildApplication[T any]() Application {
 	configurationFilePathProvider := ConfigurationFilePathProvider{"firesert-config"}
 
-	configurationFileReader := ConfigurationJsonFileReader{
-		configurationFilePathProvider,
+	configurationFileReader := ConfigurationFileReader{configurationFilePathProvider}
+
+	configurationJsonFileReader := ConfigurationJsonFileReader{configurationFileReader}
+
+	configurationJson := configurationJsonFileReader.Read()
+
+	projectIDProvider := CreateConfigurationValueProvider("projectID", "PROJECT_ID", configurationJson)
+
+	collectionNameProvider := CreateConfigurationValueProvider("collectionName", "COLLECTION_NAME", configurationJson)
+
+	configurationLoader := ApplicationConfigurationLoader{
+		projectIDProvider,
+		collectionNameProvider,
 	}
-
-	configuratonCreator := JsonConfigurationCreator{}
-
-	configurationLoader := JsonConfigurationLoader{
-		configurationFileReader,
-		configuratonCreator}
 
 	configuration := configurationLoader.Load()
 
