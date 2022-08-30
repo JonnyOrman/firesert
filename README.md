@@ -67,3 +67,25 @@ func main() {
 	firesert.RunTyped[DocumentModel]()
 }
 ```
+
+## Environment configuration
+
+The configuration can also be provided by the environment with the following keys:
+- `projectID` - `PROJECT_ID`
+- `collectionName` - `COLLECTION_NAME`
+
+A combination of the `firesert-config.json` file and environment variables can be used. For example, the project ID could be provided as the `PROJECT_ID` environment variable, while the collection name is provided with the following configuration file:
+```
+{
+    "collectionName": "FirestoreCollection"
+}
+```
+
+If a configuration value is provided in both `firesert-config.json` and the environment, then the configuration file with take priority. For example, if the `PROJECT_ID` envronment varialbe has value "env-project-id" and the following `firesert-config.json` file is provided:
+```
+{
+    "projectID": "config-project-id",
+    "collectionName": "FirestoreCollection"
+}
+```
+then the project ID will be "config-project-id".
