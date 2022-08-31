@@ -29,5 +29,5 @@ func TestBuild(t *testing.T) {
 
 	assert.Equal(t, "POST", route.Method)
 	assert.Equal(t, "/", route.Path)
-	assert.Equal(t, "github.com/jonnyorman/firesert.RequestHandler[...].Handle-fm", route.Handler)
+	assert.Equal(t, "github.com/jonnyorman/fireworks.RequestHandler[...].Handle-fm", route.Handler)
 }

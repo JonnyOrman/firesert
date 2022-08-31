@@ -1,12 +1,15 @@
 package firesert
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/jonnyorman/fireworks"
+)
 
 type GinRouterBuilder[T any] struct {
-	requestHandler RequestHandler[T]
+	requestHandler fireworks.RequestHandler[T]
 }
 
-func NewGinRouterBuilder[T any](requestHandler RequestHandler[T]) *GinRouterBuilder[T] {
+func NewGinRouterBuilder[T any](requestHandler fireworks.RequestHandler[T]) *GinRouterBuilder[T] {
 	this := new(GinRouterBuilder[T])
 
 	this.requestHandler = requestHandler

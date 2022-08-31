@@ -2,10 +2,11 @@ package firesert
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/jonnyorman/fireworks"
 )
 
 type PubSubPushRequestHandler[T any] struct {
-	dataReader   DataReader[T]
+	dataReader   fireworks.DataReader[T]
 	dataInserter DataInserter[T]
 }
 

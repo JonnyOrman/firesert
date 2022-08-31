@@ -1,38 +1,40 @@
 package firesert
 
-func BuildApplication[T any]() Application {
-	configurationFilePathProvider := ConfigurationFilePathProvider{"firesert-config"}
+import "github.com/jonnyorman/fireworks"
 
-	configurationFileReader := ConfigurationFileReader{configurationFilePathProvider}
+func BuildApplication[T any]() *fireworks.Application {
+	configurationFilePathProvider := fireworks.NewConfigurationFilePathProvider("firesert-config")
 
-	configurationJsonFileReader := ConfigurationJsonFileReader{configurationFileReader}
+	configurationFileReader := fireworks.NewConfigurationFileReader(configurationFilePathProvider)
+
+	configurationJsonFileReader := fireworks.NewConfigurationJsonFileReader(configurationFileReader)
 
 	configurationJson := configurationJsonFileReader.Read()
 
-	projectIDProvider := CreateConfigurationValueProvider("projectID", "PROJECT_ID", configurationJson)
+	projectIDProvider := fireworks.CreateConfigurationValueProvider("projectID", "PROJECT_ID", configurationJson)
 
-	collectionNameProvider := CreateConfigurationValueProvider("collectionName", "COLLECTION_NAME", configurationJson)
+	collectionNameProvider := fireworks.CreateConfigurationValueProvider("collectionName", "COLLECTION_NAME", configurationJson)
 
-	configurationLoader := ApplicationConfigurationLoader{
+	configurationLoader := fireworks.NewApplicationConfigurationLoader(
 		projectIDProvider,
 		collectionNameProvider,
-	}
+	)
 
 	configuration := configurationLoader.Load()
 
-	pubSubBodyDeserialiser := JsonDataDeserialiser[PubSubBody]{}
+	pubSubBodyDeserialiser := fireworks.JsonDataDeserialiser[fireworks.PubSubBody]{}
 
-	ioutilReader := IoutilReader{}
+	ioutilReader := fireworks.IoutilReader{}
 
-	pubSubBodyReader := GinPubSubBodyReader{
+	pubSubBodyReader := fireworks.NewGinPubSubBodyReader(
 		ioutilReader,
-		pubSubBodyDeserialiser}
+		pubSubBodyDeserialiser)
 
-	dataDeserialiser := JsonDataDeserialiser[T]{}
+	dataDeserialiser := fireworks.JsonDataDeserialiser[T]{}
 
-	dataReader := HttpRequestBodyDataReader[T]{
+	dataReader := fireworks.NewHttpRequestBodyDataReader[T](
 		pubSubBodyReader,
-		dataDeserialiser}
+		dataDeserialiser)
 
 	dataInserter := FirestoreDataInserter[T]{configuration}
 
@@ -45,7 +47,7 @@ func BuildApplication[T any]() Application {
 
 	router := routerBuilder.Build()
 
-	app := Application{router}
+	app := fireworks.NewApplication(router)
 
 	return app
 }
