@@ -3,24 +3,32 @@
 ## v0.3.0
 
 - Added dependency on `fireworks v0.1.0`
-- Removed the following types and functions, using the new versions from `fireworks` instead:
+- Removed application building, configuration and request handling utilities that are now provided by `fireworks`
+- Removed the following types and functions:
+    - Application
     - ApplicationConfigurationLoader
-    - DataReader
+    - Configuration
     - ConfigurationFilePathProvider
     - ConfigurationFileReader
     - ConfigurationJsonFileReader
     - ConfigurationLoader
     - ConfigurationValueProvider
-    - Configuration
     - CreateConfigurationValueProvider
+    - DataDeserialiser
+    - DataReader
     - EnvironmentValueProvider
     - FilePathProvider
     - FileReader
     - GinPubSubBodyReader
+    - GinRouterBuilder
     - HttpRequestBodyDataReader
+    - IoReaderGenerator
     - IoutilReader
+    - JsonDataDeserialiser
+    - JsonReader
     - JsonValueProvider
     - PubSubBody
+    - PubSubBodyReader
     - Reader
     - RequestHandler
     - RouterBuilder
