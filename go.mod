@@ -5,7 +5,7 @@ go 1.18
 require (
 	cloud.google.com/go/firestore v1.6.1
 	github.com/gin-gonic/gin v1.8.1
-	github.com/jonnyorman/fireworks v0.0.0-20220901134156-6c206776bc4f
+	github.com/jonnyorman/fireworks v0.1.0
 	github.com/stretchr/testify v1.8.0
 )
 
