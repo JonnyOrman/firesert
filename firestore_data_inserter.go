@@ -4,13 +4,14 @@ import (
 	"context"
 
 	"cloud.google.com/go/firestore"
+	"github.com/jonnyorman/fireworks"
 )
 
 type FirestoreDataInserter[T any] struct {
-	configuration Configuration
+	configuration fireworks.Configuration
 }
 
-func NewFirestoreDataInserter[T any](configuration Configuration) *FirestoreDataInserter[T] {
+func NewFirestoreDataInserter[T any](configuration fireworks.Configuration) *FirestoreDataInserter[T] {
 	this := new(FirestoreDataInserter[T])
 
 	this.configuration = configuration

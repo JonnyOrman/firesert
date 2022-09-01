@@ -1,38 +1,23 @@
 package firesert
 
-func BuildApplication[T any]() Application {
-	configurationFilePathProvider := ConfigurationFilePathProvider{"firesert-config"}
+import "github.com/jonnyorman/fireworks"
 
-	configurationFileReader := ConfigurationFileReader{configurationFilePathProvider}
+func BuildApplication[T any]() *fireworks.Application {
+	configuration := fireworks.GenerateConfiguration("firesert-config")
 
-	configurationJsonFileReader := ConfigurationJsonFileReader{configurationFileReader}
+	pubSubBodyDeserialiser := fireworks.JsonDataDeserialiser[fireworks.PubSubBody]{}
 
-	configurationJson := configurationJsonFileReader.Read()
+	ioutilReader := fireworks.IoutilReader{}
 
-	projectIDProvider := CreateConfigurationValueProvider("projectID", "PROJECT_ID", configurationJson)
-
-	collectionNameProvider := CreateConfigurationValueProvider("collectionName", "COLLECTION_NAME", configurationJson)
-
-	configurationLoader := ApplicationConfigurationLoader{
-		projectIDProvider,
-		collectionNameProvider,
-	}
-
-	configuration := configurationLoader.Load()
-
-	pubSubBodyDeserialiser := JsonDataDeserialiser[PubSubBody]{}
-
-	ioutilReader := IoutilReader{}
-
-	pubSubBodyReader := GinPubSubBodyReader{
+	pubSubBodyReader := fireworks.NewGinPubSubBodyReader(
 		ioutilReader,
-		pubSubBodyDeserialiser}
+		pubSubBodyDeserialiser)
 
-	dataDeserialiser := JsonDataDeserialiser[T]{}
+	dataDeserialiser := fireworks.JsonDataDeserialiser[T]{}
 
-	dataReader := HttpRequestBodyDataReader[T]{
+	dataReader := fireworks.NewHttpRequestBodyDataReader[T](
 		pubSubBodyReader,
-		dataDeserialiser}
+		dataDeserialiser)
 
 	dataInserter := FirestoreDataInserter[T]{configuration}
 
@@ -41,11 +26,13 @@ func BuildApplication[T any]() Application {
 		dataInserter: dataInserter,
 	}
 
-	routerBuilder := GinRouterBuilder[T]{requestHandler}
+	routerBuilder := fireworks.NewGinRouterBuilder()
+
+	routerBuilder.AddPost("/", requestHandler.Handle)
 
 	router := routerBuilder.Build()
 
-	app := Application{router}
+	application := fireworks.NewApplication(router)
 
-	return app
+	return application
 }
