@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.1
+
+- Update `fireworks` to `v0.1.1`.
+
 ## v0.3.0
 
 - Added dependency on [fireworks](https://github.com/JonnyOrman/fireworks) `v0.1.0`.
