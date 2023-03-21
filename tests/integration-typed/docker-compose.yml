@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  firebase-emulator:
+    build:
+      context: ../firebase-emulator
+      args:
+        - PROJECT=firesert-typed-integration-tests
+    environment:
+      PROJECT: firesert-typed-integration-tests
+    ports:
+      - "4000:4000"
+      - "8080:8080"
+  firesert-typed-app:
+    build:
+      context: ../../
+      dockerfile: ./tests/Dockerfile.app
+      args:
+        - GO_VERSION=1.20
+        - APP_TYPE=typed
+    environment:
+      PORT: 3001
+      PROJECT: firesert-typed-integration-tests
+      PROJECT_ID: firesert-typed-integration-tests
+      COLLECTION_NAME: TestCollection
+      FIRESTORE_EMULATOR_HOST: firebase-emulator:8080
+    ports:
+      - "3001:3001"
+    depends_on:
+      - firebase-emulator
+  firesert-typed-app-tests:
+    build:
+      context: ../../
+      dockerfile: ./tests/Dockerfile.tests
+      args:
+        - GO_VERSION=1.20
+        - APP_TYPE=typed
+    environment:
+      PROJECT: firesert-typed-integration-tests
+      COLLECTION_NAME: TestCollection
+      FIRESTORE_EMULATOR_HOST: firebase-emulator:8080
+      APP_URL: http://firesert-typed-app:3001
+    depends_on:
+      - firesert-typed-app

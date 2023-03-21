@@ -89,3 +89,9 @@ If a configuration value is provided in both `firesert-config.json` and the envi
 }
 ```
 then the project ID will be "config-project-id".
+
+## Running integration tests
+
+To run integration tests in Docker against a local Firebase emulator, run the following:
+- For typed documents: `make test-typed`
+- For untyped documents: `make test-untyped`
