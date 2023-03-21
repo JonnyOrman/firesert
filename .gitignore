@@ -1,9 +1,19 @@
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+*
 
-*.test
+!.gitignore
+!*.go
+!*.mod
+!*.sum
+!docker-compose.yml
+!README.md
+!Dockerfile
+!Dockerfile.*
+!.dockerignore
+!firebase.json
+!*.md
+!.releaserc
+!.github
+!LICENSE
+!Makefile
 
-*.out
+!*/
