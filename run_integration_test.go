@@ -1,5 +1,5 @@
-//go:build integrationtyped
-// +build integrationtyped
+//go:build integrationuntyped
+// +build integrationuntyped
 
 package firesert
 
@@ -40,7 +40,7 @@ func TestMain(m *testing.M) {
 	deleteClient.Do(req)
 }
 
-func TestDataMatchingDocumentIsInserted(t *testing.T) {
+func TestAllDataIsInserted(t *testing.T) {
 	data := make(map[string]interface{})
 	data["prop1"] = "abc"
 	data["prop2"] = 123
@@ -86,7 +86,7 @@ func TestDataMatchingDocumentIsInserted(t *testing.T) {
 
 	insertedData := snapshots[0].Data()
 
-	assert.Equal(t, "abc", insertedData["Prop1"])
-	assert.Equal(t, int64(123), insertedData["Prop2"])
-	assert.Equal(t, nil, insertedData["Prop3"])
+	assert.Equal(t, "abc", insertedData["prop1"])
+	assert.Equal(t, float64(123), insertedData["prop2"])
+	assert.Equal(t, "def", insertedData["prop3"])
 }

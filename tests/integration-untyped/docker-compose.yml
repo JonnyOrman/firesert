@@ -33,7 +33,6 @@ services:
       dockerfile: ./tests/Dockerfile.tests
       args:
         - GO_VERSION=1.20
-        - APP_TYPE=untyped
     environment:
       PROJECT: firesert-untyped-integration-tests
       COLLECTION_NAME: TestCollection
@@ -41,3 +40,4 @@ services:
       APP_URL: http://firesert-untyped-app:3001
     depends_on:
       - firesert-untyped-app
+    command: --tags=integrationuntyped

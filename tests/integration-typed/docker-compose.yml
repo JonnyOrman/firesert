@@ -33,7 +33,6 @@ services:
       dockerfile: ./tests/Dockerfile.tests
       args:
         - GO_VERSION=1.20
-        - APP_TYPE=typed
     environment:
       PROJECT: firesert-typed-integration-tests
       COLLECTION_NAME: TestCollection
@@ -41,3 +40,4 @@ services:
       APP_URL: http://firesert-typed-app:3001
     depends_on:
       - firesert-typed-app
+    command: --tags=integrationtyped

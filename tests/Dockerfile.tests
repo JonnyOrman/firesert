@@ -7,4 +7,4 @@ COPY . /firesert
 WORKDIR /firesert
 RUN go mod download
 EXPOSE 8080
-CMD ["go", "test", "--tags=integration"]
+ENTRYPOINT ["go", "test"]
